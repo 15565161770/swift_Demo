@@ -41,9 +41,11 @@ class HomeTableViewController: UITableViewController {
                 self!.player.removeFromSuperview()
                 self!.maxBehotTime = $0
                 self!.news = $1
+                print("====000====\(self!.news)")
                 self!.tableView.reloadData()
             })
         }
+        
         header?.isAutomaticallyChangeAlpha = true
         header?.lastUpdatedTimeLabel.isHidden = true
         tableView.mj_header = header

@@ -13,7 +13,7 @@ import SwiftyJSON
 protocol NetworkToolProtocol {
     // MARK: - ----------- 首页 home
     
-    // MARK: 首页顶部新闻标题的数据
+    // MARK: 首页顶部新闻标题的数据 通过闭包回调返回
     static func loadHomeNewsTitleData(completionHandler: @escaping(_ newTirles: [HomeNewsTitle]) -> ())
     
     // MARK: 获取首页、视频、小视频的新闻列表数据,加载更多
@@ -29,7 +29,8 @@ extension NetworkToolProtocol {
     /// 首页顶部新闻标题的数据
     /// - parameter completionHandler: 返回标题数据
     /// - parameter newsTitles: 首页标题数组
-    
+    // @escaping标明这个闭包是会“逃逸”,通俗点说就是这个闭包在函数执行完成之后才被调用
+    // completionHandler: @escaping(_ newTirles: [HomeNewsTitle]) -> () 定义闭包
     static func loadHomeNewsTitleData(completionHandler: @escaping(_ newTirles: [HomeNewsTitle]) -> ()) {
         let url = BASE_URL + "/article/category/get_subscribed/v1/?"
         let params = ["device_id": device_id,

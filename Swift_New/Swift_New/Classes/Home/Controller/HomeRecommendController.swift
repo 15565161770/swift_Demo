@@ -57,6 +57,7 @@ extension HomeRecommendController {
         }
     }
     
+    // tableviewcell点击方法
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var aNews = news[indexPath.row]
         if indexPath.row == 0 { // 默认设置点击第一个 cell 跳转到图片详情界面

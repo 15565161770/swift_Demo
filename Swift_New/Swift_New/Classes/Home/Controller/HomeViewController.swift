@@ -4,7 +4,7 @@
 //
 //  Created by 仝兴伟 on 2018/4/10.
 //  Copyright © 2018年 仝兴伟. All rights reserved.
-//
+// https://blog.csdn.net/dujianjunqwer/article/details/79094256
 
 import UIKit
 import SGPagingView
@@ -64,9 +64,17 @@ extension HomeViewController {
         view.addSubview(addChannelButton)
         
         /// 首页顶部新闻标题的数据
+        
+        NetworkTool.loadHomeNewsTitleData {
+            _ = $0.flatMap({ (response) -> () in
+                print("--自己--\(response.category)")
+            })
+        }
+        
         NetworkTool.loadHomeNewsTitleData {
             // 向数据库中插入数据
             NewsTitleTable().insert($0)
+            // 设置首页滚动标题
             let configuration = SGPageTitleViewConfigure()
             configuration.titleColor = .black
             configuration.titleSelectedColor = .globalRedColor()
@@ -77,36 +85,38 @@ extension HomeViewController {
             self.view.addSubview(self.pageTitleView!)
             // 设置子控制器
             // $0代表数组中的每一个元素
+            // flatMap返回后的数组中不存在nil，同时它会把Optional解包
+            // flatMap还能把数组中存有数组的数组（二维数组、N维数组）一同打开变成一个新的数组
             _ = $0.flatMap({ (newsTitle) -> () in
                 switch newsTitle.category {
                 case .video:            // 视频
                     let videoTableVC = VideoTableViewController()
 //                    videoTableVC.newsTitle = newsTitle
 //                    videoTableVC.setupRefresh(with: .video)
-                    self.addChildViewController(videoTableVC)
+//                    self.addChildViewController(videoTableVC)
                 case .essayJoke:        // 段子
                     let essayJokeVC = HomeJokeViewController()
 //                    essayJokeVC.isJoke = true
 //                    essayJokeVC.setupRefresh(with: .essayJoke)
-                    self.addChildViewController(essayJokeVC)
+//                    self.addChildViewController(essayJokeVC)
                 case .imagePPMM:        // 街拍
                     let imagePPMMVC = HomeJokeViewController()
 //                    imagePPMMVC.isJoke = false
 //                    imagePPMMVC.setupRefresh(with: .imagePPMM)
-                    self.addChildViewController(imagePPMMVC)
+//                    self.addChildViewController(imagePPMMVC)
                 case .imageFunny:        // 趣图
                     let imagePPMMVC = HomeJokeViewController()
 //                    imagePPMMVC.isJoke = false
 //                    imagePPMMVC.setupRefresh(with: .imageFunny)
-                    self.addChildViewController(imagePPMMVC)
+//                    self.addChildViewController(imagePPMMVC)
                 case .photos:           // 图片,组图
                     let homeImageVC = HomeImageViewController()
 //                    homeImageVC.setupRefresh(with: .photos)
-                    self.addChildViewController(homeImageVC)
+//                    self.addChildViewController(homeImageVC)
                 case .jinritemai:       // 特卖
                     let temaiVC = TeMaiViewController()
 //                    temaiVC.url = "https://m.maila88.com/mailaIndex?mailaAppKey=GDW5NMaKQNz81jtW2Yuw2P"
-                    self.addChildViewController(temaiVC)
+//                    self.addChildViewController(temaiVC)
                 default :
                     let homeTableVC = HomeRecommendController()
                     homeTableVC.setupRefresh(with: newsTitle.category)
@@ -133,17 +143,3 @@ extension HomeViewController: SGPageTitleViewDelegate, SGPageContentViewDelegate
         self.pageTitleView!.setPageTitleViewWithProgress(progress, originalIndex: originalIndex, targetIndex: targetIndex)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
